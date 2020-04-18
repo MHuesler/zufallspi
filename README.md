@@ -1,7 +1,7 @@
 # Zufallspi
 
 A little project for math.
-It is used to define pi out of random generated values.
+It is used to define pi out of random generated numbers.
 
 ## How to run
 
