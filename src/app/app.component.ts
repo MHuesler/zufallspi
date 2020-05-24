@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartType, ChartOptions, ChartPoint } from 'chart.js';
 
-class Data {
-  x: number;
-  y: number;
-  constructor(X: number, Y: number) {
-    this.x = X;
-    this.y = Y;
-  }
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,8 +23,14 @@ export class AppComponent implements OnInit {
   public scatterChartData: ChartDataSets[] = [
     {
       data: [],
-      label: 'Zufallszahlen',
+      label: 'Versuche',
       pointRadius: 5,
+      backgroundColor: '#FFC6BD',
+    }, {
+      data: [],
+      label: 'Treffer',
+      pointRadius: 5,
+      backgroundColor: '#A3FF98',
     },
   ];
 
@@ -49,22 +46,26 @@ export class AppComponent implements OnInit {
     for (let i = 1; i <= versuche; i++) {
       const x = (Math.random() * 2 - 1).toFixed(4);
       const y = (Math.random() * 2 - 1).toFixed(4);
-      this.versuche ++;
-      const abstand = Math.sqrt(Math.pow(Number(x), 2) + Math.pow(Number(y), 2));
-      if (abstand < 1) { this.treffer++; }
       const data: ChartPoint = {
         x: Number(x),
         y: Number(y),
       };
-      (this.scatterChartData[0].data as ChartPoint[]).push(data);
+      this.versuche ++;
+      const abstand = Math.sqrt(Math.pow(Number(x), 2) + Math.pow(Number(y), 2));
+      if (abstand > 1) {
+        this.treffer++;
+        (this.scatterChartData[0].data as ChartPoint[]).push(data);
+      } else {
+        (this.scatterChartData[1].data as ChartPoint[]).push(data);
+      }
     }
-
     this.pi = (4.0 * this.treffer / this.versuche);
     this.abweichung = (Math.abs(this.pi - Math.PI) / Math.PI) * 100;
   }
 
   clearData() {
     this.scatterChartData[0].data = [];
+    this.scatterChartData[1].data = [];
     this.versuche = 0;
     this.treffer = 0;
   }
